@@ -4,13 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bookmark_test/pages/favorites.dart';
 
-class ProductListPage extends StatelessWidget {
-  final productController = Get.put(ProductController());
-
+class ProductListPage extends StatefulWidget {
   ProductListPage({Key? key}) : super(key: key);
 
   @override
+  _ProductListPageState createState() => _ProductListPageState();
+}
+
+class _ProductListPageState extends State<ProductListPage> {
+  late ProductController productController;
+  bool _isLoved = false; // Deklarasi variabel _isLoved
+
+  @override
+  void initState() {
+    super.initState();
+    productController = Get.put(ProductController());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final itemWidth = (screenSize.width - 30) / 2;
     final allPadding = EdgeInsets.all(10.0);
 
     return Scaffold(
@@ -38,6 +52,8 @@ class ProductListPage extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
+                    childAspectRatio:
+                        itemWidth / (itemWidth + 100), // 100 adalah perkiraan tinggi konten dalam item
                   ),
                   itemCount: productController.productList.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -45,40 +61,63 @@ class ProductListPage extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {},
                       child: Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        color: AppColor.colorWhite,
+                        child: Stack(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                product.imageLink,
-                                height: 160,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    product.imageLink,
+                                    height: 160,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 3.0),
+                                  child: Text(
+                                    product.name,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontFamily: "ProductSans",
+                                      color: AppColor.textColor,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 3.0),
+                                  child: Text(
+                                    '\$${product.price}',
+                                    style: TextStyle(
+                                      fontFamily: "ProductSans",
+                                      color: AppColor.textColor,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 3.0),
-                              child: Text(
-                                product.name,
-                                maxLines: 2,
-                                style: TextStyle(
-                                    fontFamily: "ProductSans",
-                                    color: AppColor.textColor,
-                                    fontSize: 13),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 3.0),
-                              child: Text(
-                                '\$${product.price}',
-                                style: TextStyle(
-                                    fontFamily: "ProductSans",
-                                    color: AppColor.textColor,
-                                    fontSize: 18),
+                            Positioned(
+                              top: 5.0,
+                              right: 5.0,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.favorite,
+                                  color: _isLoved ? Colors.pink : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  // Perubahan warna ikon ketika ditekan
+                                  setState(() {
+                                    _isLoved = !_isLoved;
+                                  });
+                                },
                               ),
                             ),
                           ],
@@ -92,3 +131,4 @@ class ProductListPage extends StatelessWidget {
     );
   }
 }
+
