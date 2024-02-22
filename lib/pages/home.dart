@@ -4,25 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bookmark_test/pages/favorites.dart';
 
-class ProductListPage extends StatefulWidget {
+// ignore: must_be_immutable
+class ProductListPage extends StatelessWidget {
   ProductListPage({Key? key}) : super(key: key);
 
-  @override
-  _ProductListPageState createState() => _ProductListPageState();
-}
-
-class _ProductListPageState extends State<ProductListPage> {
   late ProductController productController;
-  bool _isLoved = false; // Deklarasi variabel _isLoved
-
-  @override
-  void initState() {
-    super.initState();
-    productController = Get.put(ProductController());
-  }
 
   @override
   Widget build(BuildContext context) {
+    productController = Get.put(ProductController());
+
     final Size screenSize = MediaQuery.of(context).size;
     final itemWidth = (screenSize.width - 30) / 2;
     final allPadding = EdgeInsets.all(10.0);
@@ -52,8 +43,7 @@ class _ProductListPageState extends State<ProductListPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
-                    childAspectRatio:
-                        itemWidth / (itemWidth + 100), // 100 adalah perkiraan tinggi konten dalam item
+                    childAspectRatio: itemWidth / (itemWidth + 100),
                   ),
                   itemCount: productController.productList.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -107,17 +97,14 @@ class _ProductListPageState extends State<ProductListPage> {
                             Positioned(
                               top: 5.0,
                               right: 5.0,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: _isLoved ? Colors.pink : Colors.grey,
-                                ),
-                                onPressed: () {
-                                  // Perubahan warna ikon ketika ditekan
-                                  setState(() {
-                                    _isLoved = !_isLoved;
-                                  });
+                              child: GestureDetector(
+                                onTap: () {
+                                  
                                 },
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                           ],
@@ -131,4 +118,3 @@ class _ProductListPageState extends State<ProductListPage> {
     );
   }
 }
-
