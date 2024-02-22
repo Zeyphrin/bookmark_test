@@ -140,7 +140,6 @@ class FavoriteLayout extends StatelessWidget {
               },
             )
             );
-      
     });
   }
 }
