@@ -45,14 +45,14 @@ class FavoriteController extends GetxController {
         image: filePathAndName,
         price: item.price
       );
-      await db.insert("MakeUp", favorite.toMap());
+      await db.insert("product", favorite.toMap());
     }
     getFavorite();
   }
 
   void getFavorite() async {
     isLoading.value = true;
-    List<Map<String, dynamic>> mapFavorites = await db.query("MakeUp");
+    List<Map<String, dynamic>> mapFavorites = await db.query("product");
     favorites.value = mapFavorites.map((e) => Favorite.fromMap(map: e)).toList();
     isLoading.value = false;
   }
@@ -60,7 +60,7 @@ class FavoriteController extends GetxController {
   void removeFavorite(Favorite item) async {
     isLoading.value = true;
     await db.delete(
-      "MakeUp",
+      "product",
       where: 'id = ?',
       whereArgs: [item.id],
     );

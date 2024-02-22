@@ -1,5 +1,7 @@
 import 'package:bookmark_test/common/config.dart';
 import 'package:bookmark_test/controller/api_controller.dart';
+import 'package:bookmark_test/controller/favorite_controller.dart';
+import 'package:bookmark_test/model/favorite_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bookmark_test/pages/favorites.dart';
@@ -8,15 +10,15 @@ import 'package:bookmark_test/pages/favorites.dart';
 class ProductListPage extends StatelessWidget {
   ProductListPage({Key? key}) : super(key: key);
 
-  late ProductController productController;
 
   @override
   Widget build(BuildContext context) {
-    productController = Get.put(ProductController());
 
     final Size screenSize = MediaQuery.of(context).size;
     final itemWidth = (screenSize.width - 30) / 2;
     final allPadding = EdgeInsets.all(10.0);
+    final ProductController apiController = Get.put(ProductController());
+    final FavoriteController favoriteController = Get.put(FavoriteController());
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +27,7 @@ class ProductListPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.favorite),
             onPressed: () {
-              Get.to(CartPage());
+              Get.to(FavoritePage());
             },
           ),
         ],
@@ -34,7 +36,7 @@ class ProductListPage extends StatelessWidget {
       body: Obx(() {
         return Padding(
           padding: allPadding,
-          child: productController.isLoading.value
+          child: apiController.isLoading.value
               ? Center(
                   child: CircularProgressIndicator(),
                 )
@@ -45,9 +47,9 @@ class ProductListPage extends StatelessWidget {
                     mainAxisSpacing: 10.0,
                     childAspectRatio: itemWidth / (itemWidth + 100),
                   ),
-                  itemCount: productController.productList.length,
+                  itemCount: apiController.productList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final product = productController.productList[index];
+                    final product = apiController.productList[index];
                     return GestureDetector(
                       onTap: () {},
                       child: Card(
@@ -94,19 +96,36 @@ class ProductListPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Positioned(
-                              top: 5.0,
-                              right: 5.0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  
-                                },
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.grey,
-                                ),
+                            Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: Obx(
+                                    () =>
+                                    IconButton(
+                                      onPressed: () {
+                                        favoriteController.tapLike(
+                                          Favorite(
+                                              id: product.id,
+                                              title: product.name,
+                                              image: product.imageLink,
+                                              price: product.price),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        favoriteController
+                                            .checkFavorite(product.id)
+                                            .value
+                                            ? Icons.favorite_rounded
+                                            : Icons
+                                            .favorite_outline_rounded,
+                                        size: 20,
+                                        color: Colors.pinkAccent,
+                                      ),
+                                    ),
                               ),
                             ),
+                          ),
                           ],
                         ),
                       ),

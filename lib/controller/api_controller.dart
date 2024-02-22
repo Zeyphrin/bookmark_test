@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class ProductController extends GetxController {
   RxList<Product> productList = <Product>[].obs;
   RxBool isLoading = true.obs;
+  RxBool isOffline = false.obs;
 
   @override
   void onInit(){
