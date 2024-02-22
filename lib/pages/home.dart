@@ -2,9 +2,9 @@ import 'package:bookmark_test/common/config.dart';
 import 'package:bookmark_test/controller/api_controller.dart';
 import 'package:bookmark_test/controller/favorite_controller.dart';
 import 'package:bookmark_test/model/favorite_model.dart';
+import 'package:bookmark_test/pages/favorites.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:bookmark_test/pages/favorites.dart';
 
 // ignore: must_be_immutable
 class ProductListPage extends StatelessWidget {

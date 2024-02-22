@@ -55,6 +55,7 @@ class FavoriteLayout extends StatelessWidget {
               itemCount: apiController.productList.length,
               itemBuilder: (context, index) {
                 final product = apiController.productList[index];
+                final data = favoriteController.favorites[index];
                 return GestureDetector(
                   onTap: () {
                     // Implementasi ketika item di tap
@@ -111,14 +112,63 @@ class FavoriteLayout extends StatelessWidget {
                             child: Obx(
                               () => IconButton(
                                 onPressed: () {
-                                  favoriteController.tapLike(
-                                    Favorite(
-                                      id: product.id,
-                                      title: product.name,
-                                      image: product.imageLink,
-                                      price: product.price,
-                                    ),
-                                  );
+                                  AlertDialog alert = AlertDialog(
+                                                backgroundColor: Colors.white,
+                                                // Set background color
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                ),
+                                                content: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    const Padding(
+                                                      padding: EdgeInsets.all(16.0),
+                                                      child: Text(
+                                                        "Are you sure to remove this product from your favorite list?",
+                                                        style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Get.back();
+                                                          },
+                                                          child: const Text(
+                                                            "Cancel",
+                                                            style: TextStyle(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            favoriteController.removeFavorite(data);
+                                                            Get.back();
+                                                          },
+                                                          child: const Text(
+                                                            "Remove",
+                                                            style: TextStyle(
+                                                              color: Colors.pinkAccent,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return alert;
+                                                },
+                                              );
                                 },
                                 icon: Icon(
                                   favoriteController
