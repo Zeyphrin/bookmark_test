@@ -22,6 +22,7 @@ class FavoriteController extends GetxController {
   }
 
   void tapLike(Favorite item) {
+    print(item.id);
     if(checkFavorite(item.id).value){
       removeFavorite(item);
     } else {
@@ -37,6 +38,7 @@ class FavoriteController extends GetxController {
     var filePathAndName = '${documentDirectory.path}/images/${item.id}.png';
     await Directory(firstPath).create(recursive: true);
     File file = File(filePathAndName);
+    print(item.title);
     if (!await file.exists()) {
       file.writeAsBytesSync(response.bodyBytes);
       Favorite favorite = Favorite(
@@ -53,7 +55,9 @@ class FavoriteController extends GetxController {
   void getFavorite() async {
     isLoading.value = true;
     List<Map<String, dynamic>> mapFavorites = await db.query("product");
-    favorites.value = mapFavorites.map((e) => Favorite.fromMap(map: e)).toList();
+    favorites.value = mapFavorites.map((e) { 
+      print("jam" + e["price"]);
+      return Favorite.fromMap(map: e);}).toList();
     isLoading.value = false;
   }
 

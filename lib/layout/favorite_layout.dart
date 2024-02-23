@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bookmark_test/common/config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -52,7 +54,7 @@ class FavoriteLayout extends StatelessWidget {
                 mainAxisSpacing: 10,
                 childAspectRatio: itemWidth / (itemWidth + 100),
               ),
-              itemCount: apiController.productList.length,
+              itemCount: favoriteController.favorites.length,
               itemBuilder: (context, index) {
                 final product = apiController.productList[index];
                 final data = favoriteController.favorites[index];
@@ -69,8 +71,8 @@ class FavoriteLayout extends StatelessWidget {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                product.imageLink,
+                              child: Image.file(
+                                File(data.image),
                                 height: 160,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
@@ -81,7 +83,7 @@ class FavoriteLayout extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 3.0),
                               child: Text(
-                                product.name,
+                                data.title,
                                 maxLines: 2,
                                 style: TextStyle(
                                   fontFamily: "ProductSans",
@@ -94,7 +96,7 @@ class FavoriteLayout extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 3.0),
                               child: Text(
-                                '\$${product.price}',
+                                '\$${data.price}',
                                 style: TextStyle(
                                   fontFamily: "ProductSans",
                                   color: AppColor.textColor,
@@ -172,7 +174,7 @@ class FavoriteLayout extends StatelessWidget {
                                 },
                                 icon: Icon(
                                   favoriteController
-                                          .checkFavorite(product.id)
+                                          .checkFavorite(data.id)
                                           .value
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_outline_rounded,

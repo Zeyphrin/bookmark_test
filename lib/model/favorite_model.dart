@@ -10,7 +10,7 @@ class Favorite {
       : id = map["id"],
         title = map["title"] ?? "",
         image = map["image"] ?? "",
-        price = map["image"] ?? "";
+        price = map["price"] ?? "";
 
   Map<String, dynamic> toMap() {
     return {"id": id, "title": title, "image": image, "price": price};

@@ -6,14 +6,11 @@ import 'package:bookmark_test/pages/favorites.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// ignore: must_be_immutable
 class ProductListPage extends StatelessWidget {
   ProductListPage({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-
     final Size screenSize = MediaQuery.of(context).size;
     final itemWidth = (screenSize.width - 30) / 2;
     final allPadding = EdgeInsets.all(10.0);
@@ -27,16 +24,16 @@ class ProductListPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.favorite),
             onPressed: () {
-              Get.to(FavoritePage());
+              Get.to(() => FavoritePage());
             },
           ),
         ],
       ),
       backgroundColor: AppColor.colorLight,
-      body: Obx(() {
-        return Padding(
-          padding: allPadding,
-          child: apiController.isLoading.value
+      body: Padding(
+        padding: allPadding,
+        child: Obx(
+          () => apiController.isLoading.value
               ? Center(
                   child: CircularProgressIndicator(),
                 )
@@ -97,43 +94,43 @@ class ProductListPage extends StatelessWidget {
                               ],
                             ),
                             Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: Obx(
-                                    () =>
-                                    IconButton(
-                                      onPressed: () {
-                                        favoriteController.tapLike(
-                                          Favorite(
-                                              id: product.id,
-                                              title: product.name,
-                                              image: product.imageLink,
-                                              price: product.price),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        favoriteController
-                                            .checkFavorite(product.id)
-                                            .value
-                                            ? Icons.favorite_rounded
-                                            : Icons
-                                            .favorite_outline_rounded,
-                                        size: 20,
-                                        color: Colors.pinkAccent,
-                                      ),
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Obx(
+                                  () => IconButton(
+                                    onPressed: () {
+                                      print(
+                                          "index: $index | id: ${product.id}");
+                                      favoriteController.tapLike(
+                                        Favorite(
+                                            id: product.id,
+                                            title: product.name,
+                                            image: product.imageLink,
+                                            price: product.price),
+                                      );
+                                    },
+                                    icon: Icon(
+                                      favoriteController
+                                              .checkFavorite(product.id)
+                                              .value
+                                          ? Icons.favorite_rounded
+                                          : Icons.favorite_outline_rounded,
+                                      size: 20,
+                                      color: Colors.pinkAccent,
                                     ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
                           ],
                         ),
                       ),
                     );
                   },
                 ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }
