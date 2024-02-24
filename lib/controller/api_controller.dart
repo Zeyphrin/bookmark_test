@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ProductController extends GetxController {
-  RxList<Product> productList = <Product>[].obs;
-  RxBool isLoading = true.obs;
+  RxList<ProductModelResponse> productList = <ProductModelResponse>[].obs;
+  RxBool isLoading = false.obs;
   RxBool isOffline = false.obs;
 
   @override
@@ -14,12 +14,15 @@ class ProductController extends GetxController {
   }
 
 void loadData() async {
+  print("load data..");
+  isLoading.value = true;
   try {
     final response = await http.get(Uri.parse(
-        "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"));
+        "https://fakestoreapi.com/products"));
 
     if (response.statusCode == 200) {
-      productList.value = productFromJson(response.body);
+      print("length : ${productList.length}");
+      productList.value = productModelResponseFromJson(response.body);
       isOffline.value = false; // Set aplikasi dalam mode online setelah berhasil mendapatkan data.
     } else {
       print("Status code: " + response.statusCode.toString());

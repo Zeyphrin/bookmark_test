@@ -19,7 +19,7 @@ class ProductListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Maybelline Library"),
+        title: Text("Maybelline (Awalnya) Library"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.favorite),
@@ -59,7 +59,7 @@ class ProductListPage extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    product.imageLink,
+                                    product.image,
                                     height: 160,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -70,7 +70,7 @@ class ProductListPage extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 8.0, vertical: 3.0),
                                   child: Text(
-                                    product.name,
+                                    product.title,
                                     maxLines: 2,
                                     style: TextStyle(
                                       fontFamily: "ProductSans",
@@ -96,7 +96,7 @@ class ProductListPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.topRight,
                               child: Container(
-                                margin: const EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.only(top: 10),   
                                 child: Obx(
                                   () => IconButton(
                                     onPressed: () {
@@ -105,9 +105,9 @@ class ProductListPage extends StatelessWidget {
                                       favoriteController.tapLike(
                                         Favorite(
                                             id: product.id,
-                                            title: product.name,
-                                            image: product.imageLink,
-                                            price: product.price),
+                                            title: product.title,
+                                            image: product.image,
+                                            price: product.price.toString()),
                                       );
                                     },
                                     icon: Icon(

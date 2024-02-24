@@ -23,26 +23,26 @@ class FavoriteLayout extends StatelessWidget {
     return Obx(() {
 
 
-      if (apiController.isOffline.value) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.signal_wifi_connected_no_internet_4_rounded,
-                size: 72,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Uh Oh No internet',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
-              ),
-            ],
-          ),
-        );
-      }
+      // if (apiController.isOffline.value) {
+      //   return Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         Icon(
+      //           Icons.signal_wifi_connected_no_internet_4_rounded,
+      //           size: 72,
+      //         ),
+      //         SizedBox(height: 20),
+      //         Text(
+      //           'Uh Oh No internet',
+      //           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+      //         ),
+      //       ],
+      //     ),
+      //   );
+      // }
       return Padding(padding: allPadding,
-      child: apiController.productList.isEmpty
+      child: favoriteController.favorites.isEmpty
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -56,7 +56,6 @@ class FavoriteLayout extends StatelessWidget {
               ),
               itemCount: favoriteController.favorites.length,
               itemBuilder: (context, index) {
-                final product = apiController.productList[index];
                 final data = favoriteController.favorites[index];
                 return GestureDetector(
                   onTap: () {

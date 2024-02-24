@@ -1,123 +1,84 @@
+// To parse this JSON data, do
+//
+//     final productModelResponse = productModelResponseFromJson(jsonString);
+
 import 'dart:convert';
 
-List<Product> productFromJson(String str) => List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+List<ProductModelResponse> productModelResponseFromJson(String str) => List<ProductModelResponse>.from(json.decode(str).map((x) => ProductModelResponse.fromJson(x)));
 
-String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productModelResponseToJson(List<ProductModelResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Product {
+class ProductModelResponse {
     int id;
-    Brand brand;
-    String name;
-    String price;
-    dynamic priceSign;
-    dynamic currency;
-    String imageLink;
-    String productLink;
-    String websiteLink;
+    String title;
+    double price;
     String description;
-    
-    double? rating;
-    String? category;
-    String productType;
-    List<dynamic> tagList;
-    DateTime createdAt;
-    DateTime updatedAt;
-    String productApiUrl;
-    String apiFeaturedImage;
-    List<ProductColor> productColors;
+    Category category;
+    String image;
+    Rating rating;
 
-    Product({
+    ProductModelResponse({
         required this.id,
-        required this.brand,
-        required this.name,
+        required this.title,
         required this.price,
-        required this.priceSign,
-        required this.currency,
-        required this.imageLink,
-        required this.productLink,
-        required this.websiteLink,
         required this.description,
-        required this.rating,
         required this.category,
-        required this.productType,
-        required this.tagList,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.productApiUrl,
-        required this.apiFeaturedImage,
-        required this.productColors,
+        required this.image,
+        required this.rating,
     });
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+    factory ProductModelResponse.fromJson(Map<String, dynamic> json) => ProductModelResponse(
         id: json["id"],
-        brand: brandValues.map[json["brand"]]!,
-        name: json["name"],
-        price: json["price"],
-        priceSign: json["price_sign"],
-        currency: json["currency"],
-        imageLink: json["image_link"],
-        productLink: json["product_link"],
-        websiteLink: json["website_link"],
+        title: json["title"],
+        price: json["price"]?.toDouble(),
         description: json["description"],
-        rating: json["rating"]?.toDouble(),
-        category: json["category"],
-        productType: json["product_type"],
-        tagList: List<dynamic>.from(json["tag_list"].map((x) => x)),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        productApiUrl: json["product_api_url"],
-        apiFeaturedImage: json["api_featured_image"],
-        productColors: List<ProductColor>.from(json["product_colors"].map((x) => ProductColor.fromJson(x))),
+        category: categoryValues.map[json["category"]]!,
+        image: json["image"],
+        rating: Rating.fromJson(json["rating"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "brand": brandValues.reverse[brand],
-        "name": name,
+        "title": title,
         "price": price,
-        "price_sign": priceSign,
-        "currency": currency,
-        "image_link": imageLink,
-        "product_link": productLink,
-        "website_link": websiteLink,
         "description": description,
-        "rating": rating,
-        "category": category,
-        "product_type": productType,
-        "tag_list": List<dynamic>.from(tagList.map((x) => x)),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "product_api_url": productApiUrl,
-        "api_featured_image": apiFeaturedImage,
-        "product_colors": List<dynamic>.from(productColors.map((x) => x.toJson())),
+        "category": categoryValues.reverse[category],
+        "image": image,
+        "rating": rating.toJson(),
     };
 }
 
-enum Brand {
-    MAYBELLINE
+enum Category {
+    ELECTRONICS,
+    JEWELERY,
+    MEN_S_CLOTHING,
+    WOMEN_S_CLOTHING
 }
 
-final brandValues = EnumValues({
-    "maybelline": Brand.MAYBELLINE
+final categoryValues = EnumValues({
+    "electronics": Category.ELECTRONICS,
+    "jewelery": Category.JEWELERY,
+    "men's clothing": Category.MEN_S_CLOTHING,
+    "women's clothing": Category.WOMEN_S_CLOTHING
 });
 
-class ProductColor {
-    String hexValue;
-    String? colourName;
+class Rating {
+    double rate;
+    int count;
 
-    ProductColor({
-        required this.hexValue,
-        required this.colourName,
+    Rating({
+        required this.rate,
+        required this.count,
     });
 
-    factory ProductColor.fromJson(Map<String, dynamic> json) => ProductColor(
-        hexValue: json["hex_value"],
-        colourName: json["colour_name"],
+    factory Rating.fromJson(Map<String, dynamic> json) => Rating(
+        rate: json["rate"]?.toDouble(),
+        count: json["count"],
     );
 
     Map<String, dynamic> toJson() => {
-        "hex_value": hexValue,
-        "colour_name": colourName,
+        "rate": rate,
+        "count": count,
     };
 }
 

@@ -39,6 +39,7 @@ dependencies:
   http:
   sqflite:
   path_provider: ^2.1.2
+  connectivity:
 
 dev_dependencies:
   flutter_test:
